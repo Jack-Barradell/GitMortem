@@ -1,0 +1,40 @@
+name: gitmortem-local
+
+services:
+  gitmortem:
+    build:
+      context: .
+      dockerfile: docker/gitmortem.Dockerfile
+    image: gitmortem-local
+    pull_policy: build
+    ports:
+      - "127.0.0.1:${GITMORTEM_PORT:-8766}:8080"
+    environment:
+      GITMORTEM_SCANNERS: ${GITMORTEM_SCANNERS:-known-good}
+    volumes:
+      - data:/data
+      - ${GITMORTEM_REPOS:-no-repos}:/repos/repos:ro
+    command: [--allowed-host, localhost, --allowed-host, 127.0.0.1, --insecure-cookies, --key-file, /data/instance.key, --scan-root-base, /repos]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges]
+    read_only: true
+    tmpfs: [/tmp:rw,nosuid,nodev,size=512m]
+    pids_limit: 512
+
+  create-admin:
+    image: gitmortem-local
+    pull_policy: never
+    profiles: [setup]
+    entrypoint: [/opt/gitmortem/current/bin/gitmortem, create-admin, --data-dir, /data/data]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges]
+    read_only: true
+    tmpfs: [/tmp:rw,nosuid,nodev,size=512m]
+    pids_limit: 512
+    volumes:
+      - data:/data
+
+volumes:
+  data:
+    name: gitmortem-local
+  no-repos:

@@ -1,0 +1,240 @@
+@layer theme, base, primevue;
+@import "tailwindcss";
+@plugin "tailwindcss-primeui";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+body {
+  margin: 0;
+  background: var(--p-surface-100, #f3f4f6);
+  color: var(--p-surface-900, #111827);
+  font-size: 0.9375rem;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+:root.light {
+  color-scheme: light;
+}
+
+.dark body {
+  background: var(--p-surface-950, #111827);
+  color: var(--p-surface-50, #f9fafb);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) body {
+    background: #111827;
+    color: #f9fafb;
+  }
+}
+
+@utility gm-link {
+  color: var(--p-primary-700);
+  text-decoration-line: underline;
+  text-underline-offset: 2px;
+  &:hover {
+    text-decoration-thickness: 2px;
+  }
+  @variant dark {
+    color: var(--p-primary-300);
+  }
+}
+
+@media (width < 64rem) {
+  .p-datatable-tbody > tr > td {
+    white-space: nowrap;
+  }
+}
+
+.p-dialog-mask {
+  padding: 1rem;
+}
+
+mark.segment-mark-own,
+mark.segment-mark-other {
+  color: inherit;
+  padding: 0 0.125rem;
+  border-radius: 0.125rem;
+}
+
+mark.segment-mark-own {
+  background: var(--gm-own-background);
+  box-shadow: inset 0 -2px var(--gm-own-edge);
+}
+
+mark.segment-mark-other {
+  background: var(--gm-known-background);
+  box-shadow: inset 0 -2px var(--gm-known-edge);
+}
+
+:root {
+  --gm-code-background: var(--p-surface-0);
+  --gm-foreground: var(--p-surface-900);
+  --gm-token-keyword: var(--p-violet-700);
+  --gm-token-string: var(--p-sky-800);
+  --gm-token-string-expression: var(--p-emerald-700);
+  --gm-token-comment: var(--p-surface-500);
+  --gm-token-constant: var(--p-blue-700);
+  --gm-token-function: var(--p-indigo-700);
+  --gm-token-parameter: var(--p-amber-800);
+  --gm-token-punctuation: var(--p-surface-600);
+  --gm-token-link: var(--p-teal-700);
+  --gm-token-inserted: var(--p-green-700);
+  --gm-token-deleted: var(--p-rose-700);
+  --gm-token-changed: var(--p-orange-700);
+  --gm-known-background: var(--p-amber-100);
+  --gm-own-background: var(--p-yellow-300);
+  --gm-own-edge: var(--p-red-600);
+  --gm-known-edge: var(--p-amber-600);
+  --gm-find-background: var(--p-yellow-200);
+  --gm-find-current-background: var(--p-yellow-300);
+}
+
+:root.dark {
+  --gm-code-background: var(--p-surface-900);
+  --gm-foreground: var(--p-surface-100);
+  --gm-token-keyword: var(--p-violet-300);
+  --gm-token-string: var(--p-sky-300);
+  --gm-token-string-expression: var(--p-emerald-300);
+  --gm-token-comment: var(--p-surface-400);
+  --gm-token-constant: var(--p-blue-300);
+  --gm-token-function: var(--p-indigo-300);
+  --gm-token-parameter: var(--p-amber-300);
+  --gm-token-punctuation: var(--p-surface-300);
+  --gm-token-link: var(--p-teal-300);
+  --gm-token-inserted: var(--p-green-300);
+  --gm-token-deleted: var(--p-rose-300);
+  --gm-token-changed: var(--p-orange-300);
+  --gm-known-background: var(--p-amber-950);
+  --gm-own-background: var(--p-yellow-700);
+  --gm-own-edge: var(--p-red-400);
+  --gm-known-edge: var(--p-amber-400);
+  --gm-find-background: var(--p-yellow-900);
+  --gm-find-current-background: var(--p-yellow-700);
+}
+
+.code-view .code-scroller {
+  position: relative;
+  height: 100%;
+  overflow: auto;
+  contain: strict;
+  background: var(--gm-code-background);
+}
+
+.code-view .code-scroller:focus-visible {
+  outline: 2px solid var(--p-primary-color);
+  outline-offset: -2px;
+}
+
+.code-view .code-spacer {
+  position: relative;
+  min-width: 100%;
+}
+
+.code-view .code-rows {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+}
+
+.code-view .code-row {
+  display: flex;
+  height: 20px;
+  line-height: 20px;
+  white-space: pre;
+  tab-size: 4;
+}
+
+.code-view .code-gutter {
+  position: sticky;
+  left: 0;
+  flex: none;
+  width: calc(var(--code-gutter-digits, 1) * 1ch + 1.5rem);
+  padding-right: 0.75rem;
+  text-align: right;
+  color: var(--p-surface-500);
+  background: var(--gm-code-background);
+  user-select: none;
+}
+
+.code-view .code-text {
+  padding-right: 0.75rem;
+}
+
+.code-view .code-row[data-target] {
+  background: var(--p-highlight-background);
+}
+
+.code-view .code-row[data-target] .code-gutter {
+  background:
+    linear-gradient(var(--p-highlight-background), var(--p-highlight-background)),
+    var(--gm-code-background);
+  color: var(--p-highlight-color);
+  font-weight: 600;
+}
+
+.code-view .mark {
+  background: var(--gm-known-background);
+  box-shadow: inset 0 -2px var(--gm-known-edge);
+}
+
+.code-view [data-find="hit"] {
+  background: var(--gm-find-background);
+}
+
+.code-view [data-find="current"] {
+  background: var(--gm-find-current-background);
+  outline: 2px solid var(--p-primary-color);
+}
+
+.tok-plain {
+  color: var(--gm-foreground);
+}
+.tok-keyword {
+  color: var(--gm-token-keyword);
+}
+.tok-string {
+  color: var(--gm-token-string);
+}
+.tok-string-expression {
+  color: var(--gm-token-string-expression);
+}
+.tok-comment {
+  color: var(--gm-token-comment);
+  font-style: italic;
+}
+.tok-constant {
+  color: var(--gm-token-constant);
+}
+.tok-function {
+  color: var(--gm-token-function);
+}
+.tok-parameter {
+  color: var(--gm-token-parameter);
+}
+.tok-punctuation {
+  color: var(--gm-token-punctuation);
+}
+.tok-link {
+  color: var(--gm-token-link);
+  text-decoration: underline;
+}
+.tok-inserted {
+  color: var(--gm-token-inserted);
+}
+.tok-deleted {
+  color: var(--gm-token-deleted);
+}
+.tok-changed {
+  color: var(--gm-token-changed);
+}
