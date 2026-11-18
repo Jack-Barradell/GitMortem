@@ -1,0 +1,117 @@
+export const LANGUAGES = [
+  "javascript",
+  "jsx",
+  "typescript",
+  "tsx",
+  "python",
+  "go",
+  "java",
+  "json",
+  "yaml",
+  "toml",
+  "ini",
+  "properties",
+  "dotenv",
+  "shellscript",
+  "docker",
+  "xml",
+  "html",
+  "markdown",
+  "sql",
+  "ruby",
+  "php",
+  "c",
+  "cpp",
+  "csharp",
+  "terraform",
+] as const;
+
+export type LangId = (typeof LANGUAGES)[number];
+
+const BY_NAME = new Map<string, LangId>([
+  ["dockerfile", "docker"],
+  ["containerfile", "docker"],
+  ["gemfile", "ruby"],
+  ["rakefile", "ruby"],
+  [".bashrc", "shellscript"],
+  [".zshrc", "shellscript"],
+  [".profile", "shellscript"],
+  [".gitconfig", "ini"],
+  [".npmrc", "ini"],
+  [".pypirc", "ini"],
+  ["credentials", "ini"],
+  [".env", "dotenv"],
+]);
+
+const BY_PREFIX: readonly (readonly [string, LangId])[] = [
+  [".env.", "dotenv"],
+  ["dockerfile.", "docker"],
+];
+
+const BY_EXTENSION = new Map<string, LangId>([
+  ["js", "javascript"],
+  ["mjs", "javascript"],
+  ["cjs", "javascript"],
+  ["jsx", "jsx"],
+  ["ts", "typescript"],
+  ["mts", "typescript"],
+  ["cts", "typescript"],
+  ["tsx", "tsx"],
+  ["py", "python"],
+  ["pyi", "python"],
+  ["pyw", "python"],
+  ["go", "go"],
+  ["java", "java"],
+  ["json", "json"],
+  ["yaml", "yaml"],
+  ["yml", "yaml"],
+  ["toml", "toml"],
+  ["ini", "ini"],
+  ["cfg", "ini"],
+  ["conf", "ini"],
+  ["properties", "properties"],
+  ["env", "dotenv"],
+  ["sh", "shellscript"],
+  ["bash", "shellscript"],
+  ["zsh", "shellscript"],
+  ["ksh", "shellscript"],
+  ["dockerfile", "docker"],
+  ["xml", "xml"],
+  ["xsd", "xml"],
+  ["xsl", "xml"],
+  ["xslt", "xml"],
+  ["plist", "xml"],
+  ["csproj", "xml"],
+  ["svg", "xml"],
+  ["html", "html"],
+  ["htm", "html"],
+  ["xhtml", "html"],
+  ["md", "markdown"],
+  ["markdown", "markdown"],
+  ["sql", "sql"],
+  ["rb", "ruby"],
+  ["rake", "ruby"],
+  ["gemspec", "ruby"],
+  ["php", "php"],
+  ["c", "c"],
+  ["h", "c"],
+  ["cc", "cpp"],
+  ["cpp", "cpp"],
+  ["cxx", "cpp"],
+  ["hpp", "cpp"],
+  ["hh", "cpp"],
+  ["hxx", "cpp"],
+  ["cs", "csharp"],
+  ["tf", "terraform"],
+  ["tfvars", "terraform"],
+  ["hcl", "terraform"],
+]);
+
+export function languageFor(path: string): LangId | null {
+  const name = path.slice(path.lastIndexOf("/") + 1).toLowerCase();
+  const named = BY_NAME.get(name);
+  if (named !== undefined) return named;
+  for (const [prefix, lang] of BY_PREFIX) if (name.startsWith(prefix)) return lang;
+  const dot = name.lastIndexOf(".");
+  return dot > 0 ? (BY_EXTENSION.get(name.slice(dot + 1)) ?? null) : null;
+}

@@ -1,0 +1,43 @@
+[Unit]
+Description=GitMortem, secret-exposure triage
+After=network.target
+
+[Service]
+Type=simple
+User=gitmortem
+Group=gitmortem
+Environment=PYTHONUNBUFFERED=1
+ExecStartPre=+/usr/bin/install -d -m 2750 -o gitmortem -g caddy /run/gitmortem
+ExecStartPre=+/usr/bin/chown gitmortem:caddy /run/gitmortem
+ExecStartPre=+/usr/bin/chmod 2750 /run/gitmortem
+ExecStart=/opt/gitmortem/current/bin/gitmortem serve --unix-socket /run/gitmortem/http.sock --data-dir /var/lib/gitmortem/data --key-file /var/lib/gitmortem/instance.key --allowed-host $address --scan-root-base /srv/gitmortem/repos --tools-dir /opt/gitmortem/tools
+Restart=on-failure
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ReadWritePaths=/var/lib/gitmortem /srv/gitmortem/repos -/run/gitmortem
+RestrictAddressFamilies=AF_UNIX
+IPAddressDeny=any
+CapabilityBoundingSet=
+AmbientCapabilities=
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+ProtectProc=invisible
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RemoveIPC=true
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+
+[Install]
+WantedBy=multi-user.target
