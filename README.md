@@ -2,6 +2,8 @@
 
 GitMortem is a triage tool for secrets leaked into git. It runs gitleaks, TruffleHog, git-secrets and rules of your own over the whole history of every repository you point it at, and puts what they find in one list: each secret once, with every place it turned up. Your team works through that list together, marking each secret valid, revoked, a false positive and so on, adding notes, and reading the code it came from at the commit where it was found.
 
+You can find my related blog post at [https://thehackingblog.com/2026/11/23/secrets-in-git-a-red-teamers-guide/](https://thehackingblog.com/2026/11/23/secrets-in-git-a-red-teamers-guide/)
+
 ![The Secrets page. A bar across the top counts the secrets that still need a look, by status, and the list below gives each one's repository, type, file, status and commit.](.github/readme/secrets.png)
 
 It runs on your own machine or as a server for the team, and never goes online while it runs.
