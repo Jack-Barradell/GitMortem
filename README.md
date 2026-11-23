@@ -111,7 +111,7 @@ The image has no scanners in it. On its first start it installs them into the vo
 
 </details>
 
-### Windows (not yet tested)
+### Windows
 
 You need [Git for Windows](https://git-scm.com/download/win), which brings git and the bash that git-secrets runs in. From the clone:
 
